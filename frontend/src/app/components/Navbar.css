@@ -1,0 +1,41 @@
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+@media (min-width: 1024px) {
+    nav {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .hidden {
+        display: none;
+    }
+}
+
+@media (max-width: 1024px) {
+    nav {
+        flex-direction: column;
+    }
+
+    nav .menu {
+        display: flex;
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        flex-direction: column;
+        width: 2.25rem;
+        height: 2rem;
+    }
+
+    nav .menu button {
+        margin-left: auto;
+    }
+
+    .lg\\:hidden {
+        display: block !important;
+    }
+}

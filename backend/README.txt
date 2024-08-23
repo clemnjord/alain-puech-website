@@ -1,0 +1,1 @@
+TODO: This should contain the backend of the application. The frontend will request data to display, depending on the language. It will serve the images and text and contain the logic to choose which self portraits to display.

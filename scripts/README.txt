@@ -1,0 +1,1 @@
+TODO: Write script to build container images, run the application locally, and run the containerized application.
