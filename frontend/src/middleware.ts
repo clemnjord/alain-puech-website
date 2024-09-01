@@ -9,7 +9,7 @@ const nextIntlMiddleware = createMiddleware({
     pathnames: pathnames,
 });
 
-export default function (req: NextRequest): NextResponse {
+export default function(req: NextRequest): NextResponse {
     return nextIntlMiddleware(req);
 }
 

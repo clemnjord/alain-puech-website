@@ -18,12 +18,12 @@ const LanguageSelector: React.FC = () => {
             // always match for the current route, we can skip runtime checks.
             // Comment from next-intl
             {pathname, params},
-            {locale: locale}
+            {locale: locale},
         );
     };
 
     return (
-        <div className="flex space-x-2">
+        <div className="flex space-x-2 z-0">
             <button
                 type="button"
                 className={`${
