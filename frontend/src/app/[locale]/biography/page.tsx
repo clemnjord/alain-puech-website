@@ -4,7 +4,7 @@ import React from 'react';
 import {useTranslations} from 'use-intl';
 
 export default function Biography() {
-    const t = useTranslations();
+    const translations = useTranslations();
 
-    return <p>{t('biography.main')}</p>;
+    return <p>{translations('biography.main')}</p>;
 }

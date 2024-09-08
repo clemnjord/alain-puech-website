@@ -1,25 +1,29 @@
 'use client';
 
-import React, {useEffect, useState} from 'react';
-import {SelfPortraitsBuilder} from '@/models/selfPortraitModel';
+import React, {ReactNode, useEffect, useState} from 'react';
+import {SelfPortraitModel, SelfPortraitsBuilder} from '@/models/selfPortraitModel';
 import SelfPortrait from './self-portrait';
 import {FaTimesCircle} from 'react-icons/fa';
 
+import DayMonthPicker from "../components/DayMonthPicker/dayMonthPicker";
+
 import ImageSlider from '@/app/[locale]/components/ImageSlider/ImageSlider';
 
-
-interface DaySelfPortraitsProps {
-    month: number;
-    day: number;
-}
+const today = new Date();
+const currentDay = today.getDate();
+const currentMonth = today.getMonth();
 
 // TODO: not necessarily something for here, but it might be better to use the route for the days?
-//       something like www..../self-portraits/vertical-day/[month]/[day]/ ?
+//       something like www..../self-portraits/day/[month]/[day]/ ?
 //       might be better for preloading ? SEO?
 // TODO : Look into promises (is it react 19?) to avoid flickering when changing the language or the date.
-const DaySelfPortraits: React.FC<DaySelfPortraitsProps> = ({month, day}) => {
+// TODO: Some dates are not matching. There seem to be 2 31/11/2008.
+const DaySelfPortraits: React.FC = () => {
     const [modal, setModal] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [selectedDate, setSelectedDate] = useState<{ day: number; month: number }>({day:currentDay, month:currentMonth});
+    const [data, setData] = useState<SelfPortraitModel[]>([]);
+    const [selfPortraitsElements, setSelfPortraitsElements] = useState<ReactNode[]>([]);
 
     const toggleModal = () => {
         setModal(!modal);
@@ -43,21 +47,36 @@ const DaySelfPortraits: React.FC<DaySelfPortraitsProps> = ({month, day}) => {
         };
     }, [modal]);
 
+    useEffect(() => {
+        // Generate self-portraits based on the selected date
+        const generatedData = SelfPortraitsBuilder.generateDaySelfPortraits(new Date(2008, selectedDate.month, selectedDate.day));
+        setData(generatedData);
+    }, [selectedDate]);
 
-    const data = SelfPortraitsBuilder.generateDaySelfPortraits(new Date(2008, month, day));
-    const selfPortraitsElements = [];
+    useEffect(() => {
+        // Update the list of portrait elements when data changes
+        const tempElements: ReactNode[] = [];
 
-    for (let i = 0; i < data.length; i++) {
-        selfPortraitsElements.push(
-            <div onClick={() => updateModal(i)}
-                 className={'md:w-1/2 lg:w-1/3 flex justify-center p-4 gallery-item cursor-pointer'}>
-                <SelfPortrait key={data[i].getImgId()} selfPortrait={data[i]} />
-            </div>,
-        );
-    }
+        for (let i = 0; i < data.length; i++) {
+            tempElements.push(
+                <div key={data[i].getImgId()} onClick={() => updateModal(i)} className={'md:w-1/2 lg:w-1/3 flex justify-center p-4 gallery-item cursor-pointer'}>
+                    <SelfPortrait selfPortrait={data[i]} />
+                </div>,
+            );
+        }
+
+        setSelfPortraitsElements(tempElements);
+    }, [data]);
+
+
+    const handleDateChange = (date: { day: number; month: number }) => {
+        setSelectedDate(date);
+    };
 
     return (
         <div>
+            <DayMonthPicker onDateChange={handleDateChange} initialDate={selectedDate} />
+
             {modal && (
                 <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
                     <div

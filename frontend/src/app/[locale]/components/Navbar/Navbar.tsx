@@ -8,17 +8,17 @@ import {pathnames} from '@/config';
 
 // TODO: The button corresponding to the current page should be highlighted.
 export const Navbar: React.FC = () => {
-    const t = useTranslations();
+    const translations = useTranslations();
     const galleryLink = 'https://www.jpb-art.fr/';
     const linkData: {link: keyof typeof pathnames; content: string}[] = [
         {
-            link: '/self-portraits', content: t('common.selfPortraits'),
+            link: '/self-portraits', content: translations('common.selfPortraits'),
         },
         {
-            link: '/other-works', content: t('common.otherWorks'),
+            link: '/other-works', content: translations('common.otherWorks'),
         },
         {
-            link: '/biography', content: t('common.biography'),
+            link: '/biography', content: translations('common.biography'),
         },
     ];
 
@@ -31,10 +31,10 @@ export const Navbar: React.FC = () => {
                     <Link href="/" className="flex-row">
                         <div>
                             <span
-                                className="text-3xl font-semibold text-white dark:text-white text-nowrap">{t('common.title')}</span>
+                                className="text-3xl font-semibold text-white dark:text-white text-nowrap">{translations('common.title')}</span>
                             <br />
                             <span
-                                className="text-xl font-light text-white dark:text-white text-nowrap">{t('common.subtitle')}</span>
+                                className="text-xl font-light text-white dark:text-white text-nowrap">{translations('common.subtitle')}</span>
                         </div>
                     </Link>
                 </div>
@@ -53,7 +53,7 @@ export const Navbar: React.FC = () => {
 
                     <a href={galleryLink}
                        className="text-xs sm:text-sm md:text-base lg:text-base text-gray-100 font-semibold hover:bg-gray-100 hover:text-black rounded py-2 px-4">
-                        {t('common.gallery')}
+                        {translations('common.gallery')}
                     </a>
                 </div>
 
@@ -75,7 +75,7 @@ export const Navbar: React.FC = () => {
 
                     <a href={galleryLink}
                        className="text-xs sm:text-sm md:text-base lg:text-base text-gray-100 font-semibold hover:bg-gray-100 hover:text-black rounded py-2 px-4">
-                        {t('common.gallery')}
+                        {translations('common.gallery')}
                     </a>
 
 
