@@ -5,12 +5,14 @@ import LanguageSelector from '../LanguageSelector/LanguageSelector';
 import {useTranslations} from 'use-intl';
 import {Link} from '@/navigation';
 import {pathnames} from '@/config';
+import {usePathname} from '@/navigation'
 
 // TODO: The button corresponding to the current page should be highlighted.
 export const Navbar: React.FC = () => {
     const translations = useTranslations();
+    const pathname = usePathname();
     const galleryLink = 'https://www.jpb-art.fr/';
-    const linkData: {link: keyof typeof pathnames; content: string}[] = [
+    const linkData: { link: keyof typeof pathnames; content: string }[] = [
         {
             link: '/self-portraits', content: translations('common.selfPortraits'),
         },
@@ -32,7 +34,7 @@ export const Navbar: React.FC = () => {
                         <div>
                             <span
                                 className="text-3xl font-semibold text-white dark:text-white text-nowrap">{translations('common.title')}</span>
-                            <br />
+                            <br/>
                             <span
                                 className="text-xl font-light text-white dark:text-white text-nowrap">{translations('common.subtitle')}</span>
                         </div>
@@ -43,9 +45,12 @@ export const Navbar: React.FC = () => {
                 <div
                     className="hidden w-full absolute lg:flex space-x-4 ml-auto items-center content-center justify-center">
                     {linkData.map((item, index) => {
+                        const isActive = pathname === item.link;
+
                         return (
                             <Link key={index} href={item.link}
-                                  className="text-xs sm:text-sm md:text-base lg:text-base text-gray-100 font-semibold hover:bg-gray-100 hover:text-black rounded py-2 px-4">
+                                  className={`text-xs sm:text-sm md:text-base lg:text-base font-semibold rounded py-2 px-4 
+                                  ${isActive ? 'bg-gray-100 text-black' : 'text-gray-100 hover:bg-gray-100 hover:text-black'}`}>
                                 {item.content}
                             </Link>
                         );
@@ -57,7 +62,7 @@ export const Navbar: React.FC = () => {
                     </a>
                 </div>
 
-                <LanguageSelector />
+                <LanguageSelector/>
             </div>
 
             {/* Navigation menu items when screen width is small. Links to rest of the website. */}
