@@ -39,12 +39,12 @@ jobs:
       # TODO: Add condition to only push on merge request
       # Push the Docker image to Docker Hub
       - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
 
       # TODO: Add condition to only check pull on merge request
       # Verify the image exists in Docker Hub
       - name: Verify Docker image exists
-        run: docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
+        run: docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
 
       # Post build cleanup to avoid overloading runner
       - name: Remove Docker dangling images
