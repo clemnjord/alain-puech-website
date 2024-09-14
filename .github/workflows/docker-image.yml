@@ -33,7 +33,7 @@ jobs:
       # Build the Docker image using the Dockerfile
       - name: Build Docker image
         run: |
-          docker build -f frontend/Containerfile -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest .
+          docker build -f frontend/Containerfile -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest .
 
       # TODO: Add condition to only push on merge request
       # Push the Docker image to Docker Hub
