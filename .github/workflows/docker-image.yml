@@ -15,6 +15,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Debug temp step
+      - name: Debug temp step
+        run: ls frontend/
+
       # Set up Docker Buildx (multi-platform builds)
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
