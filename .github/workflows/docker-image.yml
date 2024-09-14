@@ -15,17 +15,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Debug temp step
-      - name: Debug temp step
-        run: ls frontend/
-
       # Set up Docker Buildx (multi-platform builds)
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-
-      # Docker does not have an option to specify which ignore file to use
-      - name: Rename .containerignore to .dockerignore
-        run: mv frontend/.containerignore frontend/.dockerignore
 
       # Log in to Docker Hub
       - name: Log in to Docker Hub
@@ -34,22 +26,25 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
+      # Docker does not have an option to specify which ignore file to use
+      - name: Rename .containerignore to .dockerignore
+        working-directory: frontend
+        run: mv .containerignore .dockerignore
+
       # Build the Docker image using the Dockerfile
       - name: Build Docker image
-        run: |
-          docker build -f frontend/Containerfile -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest .
+        working-directory: frontend
+        run: docker build -f Containerfile -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest .
 
       # TODO: Add condition to only push on merge request
       # Push the Docker image to Docker Hub
       - name: Push Docker image
-        run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
 
       # TODO: Add condition to only check pull on merge request
       # Verify the image exists in Docker Hub
       - name: Verify Docker image exists
-        run: |
-          docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
+        run: docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
 
       # Post build cleanup to avoid overloading runner
       - name: Remove Docker dangling images
