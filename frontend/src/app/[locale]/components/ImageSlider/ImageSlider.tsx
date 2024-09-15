@@ -44,7 +44,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({images, currentIndex}) => {
                                     alt="slider image"
                                     layout="fill"
                                     objectFit="scale-down"
-                                    priority
+                                    loading={'lazy'}
                                 />
                             )}
                         </div>

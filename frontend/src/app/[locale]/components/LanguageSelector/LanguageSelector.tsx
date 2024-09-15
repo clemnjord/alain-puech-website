@@ -1,8 +1,7 @@
 import React from 'react';
 import {useParams} from 'next/navigation';
 import {useLocale} from 'next-intl';
-import {Locale} from '@/config';
-import {usePathname, useRouter} from '@/navigation';
+import {usePathname, useRouter, Locale} from '@/i18n/routing';
 
 const LanguageSelector: React.FC = () => {
     const router = useRouter();

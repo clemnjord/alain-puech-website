@@ -1,8 +1,7 @@
-import {Locale} from '@/config';
-import {addDays, addYears, differenceInCalendarDays, format, isAfter, isBefore, isSameMonth} from 'date-fns';
+import {Locale} from '@/i18n/routing';
+import {addDays, differenceInCalendarDays, format, isAfter, isBefore, isExists, isSameMonth} from 'date-fns';
 import {fr} from 'date-fns/locale/fr';
 import {enGB} from 'date-fns/locale/en-GB';
-import path from 'path';
 
 export class SelfPortraitModel {
     private readonly date: Date;
@@ -13,7 +12,6 @@ export class SelfPortraitModel {
         this.date = date;
         this.imgId = imgId;
         this.imgPath = imgPath;
-
     }
 
     public getIntlDateString(locale: Locale): string {
@@ -61,17 +59,35 @@ export class SelfPortraitsBuilder {
     static generateDaySelfPortraits(date: Date): SelfPortraitModel[] {
         let selfPortraits: SelfPortraitModel[] = [];
 
-        let tempDate = new Date(this.originDate.getFullYear(), date.getMonth(), date.getDate());
-        if (isBefore(tempDate, this.originDate)) {
-            tempDate.setFullYear(date.getFullYear() + 1);
+        let possibleDate = this.nextPossibleDate(date.getFullYear(), date.getMonth(), date.getDate());
+
+        while (possibleDate.found) {
+            if(this.checkImageExists(possibleDate.date)) {
+                selfPortraits.push(new SelfPortraitModel(possibleDate.date, this.getIdFromDate(possibleDate.date), this.getImgPathFromDate(possibleDate.date)));
+            }
+            possibleDate = this.nextPossibleDate(possibleDate.date.getFullYear() + 1, date.getMonth(), date.getDate());
         }
 
-        while (this.checkImageExists(tempDate)) {
-            selfPortraits.push(new SelfPortraitModel(tempDate, this.getIdFromDate(tempDate), this.getImgPathFromDate(tempDate)));
-            tempDate = addYears(tempDate, 1);
+        // Reverse to get latest self-portrait first
+        return selfPortraits.reverse();
+    }
+
+    private static nextPossibleDate(year: number, month: number, day: number): {found: boolean, date: Date} {
+        let found = false;
+
+        while(isBefore(new Date(year, month, day), this.originDate)) {
+            year++;
         }
 
-        return selfPortraits;
+        while (!found && year <= SelfPortraitsBuilder.maxDate.getFullYear()) {
+            if (isExists(year, month, day)) {
+                found = true;
+            } else {
+                year++;
+            }
+        }
+
+        return {found: found, date: new Date(year, month, day)};
     }
 
     static generateMonthSelfPortraits(date: Date): SelfPortraitModel[] {

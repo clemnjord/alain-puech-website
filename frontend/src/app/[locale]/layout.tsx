@@ -5,9 +5,8 @@ import Footer from './components/Footer/Footer';
 import {NextIntlClientProvider, useMessages} from 'next-intl';
 import React from 'react';
 import {getTranslations} from 'next-intl/server';
-import {Locale} from '@/config';
+import {Locale} from '@/i18n/routing';
 
-const inter = Inter({subsets: ['latin']});
 
 type Props = {
     children: React.ReactNode;
