@@ -20,7 +20,8 @@
     "react-datepicker": "^7.3.0",
     "react-dom": "^18",
     "react-router-dom": "^6.26.1",
-    "sass": "^1.77.8"
+    "sass": "^1.77.8",
+    "sharp": "^0.33.5"
   },
   "devDependencies": {
     "@types/node": "^20",

@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import {SelfPortraitModel} from '@/models/selfPortraitModel';
 import {useLocale} from 'next-intl';
-import {Locale} from '@/config';
+import {Locale} from '@/i18n/routing';
 
 interface SelfPortraitProps {
     selfPortrait: SelfPortraitModel;
@@ -18,7 +18,8 @@ const SelfPortrait: React.FC<SelfPortraitProps> = ({selfPortrait}) => {
     return (
         <div>
             <Image alt={selfPortrait.getIntlDateString(currentLocale)} src={selfPortrait.getImagePath()} width={300}
-                   height={400} />
+                   height={400}
+            />
             <span>{selfPortrait.getIntlDateString(currentLocale)}</span>
         </div>
     );
